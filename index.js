@@ -1,4 +1,9 @@
-const app = require('express')();
+const Express = require('express')
+const app = new Express()
+
+app.use(Express.urlencoded({extended: true}));
+app.use(Express.json())
+
 const cors = require('cors');
 const config = require('./knexfile') 
 const knex = require('knex')(config)
@@ -10,10 +15,11 @@ const route_exam = require ('./routes/route_exam')
 app.use('/api/exam',route_exam)
 
 app.get('/',(req,res) => {
-	 knex('OTexams').max('examid',{as: 'examid'})
+	 knex('OTexams').first()
 	 .then(data => {
-	 	 res.json({ data : data[0] })
+	 	 res.json({ data : data })
 	 })
+
 })
 
 
